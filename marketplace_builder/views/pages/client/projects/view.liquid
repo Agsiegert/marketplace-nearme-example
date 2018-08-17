@@ -1,0 +1,26 @@
+---
+slug: client/projects/view
+format: html
+layout_name: application
+---
+{% query_graph 'show_project', result_name: graph_project, slug: params.slugs, creator_id: params.creator %}
+{% if graph_project %}
+  <h1>{{ graph_project.project.name}}</h1>
+  <ul>
+    <li><b>Description of project:</b> {{ graph_project.project.description }} </li>
+    <li><b>State of project:</b> {{ graph_project.project.state }} </li>
+    <li><b>Workplace Online:</b> {{ graph_project.project.workplace_online }} </li>
+    <li><b>Workplace Onsite:</b> {{ graph_project.project.workplace_onsite }} </li>
+    <li><b>Budget:</b> {{ graph_project.project.budget }} </li>
+    <li><b>Deadline:</b> {{ graph_project.project.deadline }} </li>
+  </ul>
+  <a href="mailto:{{ graph_project.project.creator.email}}">
+    Contact project creator
+  </a>
+  </br>
+{% else %}
+  <p>Unfortunately we could not find this project.
+{% endif %}
+<a href="/">
+  Back to Projects
+</a>

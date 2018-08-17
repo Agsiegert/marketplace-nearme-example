@@ -41,3 +41,30 @@ Not you? {% render_form log_out_form %}
   {% endif %}
 {% endif %}
 
+{% if g.current_user.developer_profile %}
+  {% assign page = params.page | default: 1 | plus: 0 %}
+  <a href="/update_profile">Update Profile</a>
+
+  {% query_graph 'all_projects', result_name: g, per_page: 20, page: page %}
+
+  {% if g.projects.total_entries > 0 %}
+  <br>
+    <h2>Available Projects</h2>
+    <ul>
+      {% for project in g.projects.results %}
+        <li>{{ project.name }} ({{ project.state }}) - <a href="/client/projects/view/{{project.slug}}?creator={{ project.creator_id }}">view</a></li>
+      {% endfor %}
+    </ul>
+    {% assign pages = g.projects.total_pages %}
+    {% assign current_page = g.projects.current_page %}
+    {% if pages > 1 %}
+      <div class="pager">
+        {% for page in (1..pages) %}
+          <a href="{{ current_path }}?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% else %}
+    <p>There are not any projects yet.</p>
+  {% endif %}
+{% endif %}
